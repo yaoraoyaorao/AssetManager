@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetManager.WPF", "AssetManager.WPF.csproj", "{0B1E7B54-1993-4441-84E5-E61B1198A295}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetManager.API", "..\AssetManager.API\AssetManager.API.csproj", "{55D9A365-CAFE-42BD-AAB5-2D2BCBA72F89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetManager.Shared", "..\AssetManager.Shared\AssetManager.Shared.csproj", "{5FEAA6B9-527F-4A65-B10B-AF3B2E2FC8DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{0B1E7B54-1993-4441-84E5-E61B1198A295}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B1E7B54-1993-4441-84E5-E61B1198A295}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B1E7B54-1993-4441-84E5-E61B1198A295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D9A365-CAFE-42BD-AAB5-2D2BCBA72F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D9A365-CAFE-42BD-AAB5-2D2BCBA72F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D9A365-CAFE-42BD-AAB5-2D2BCBA72F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D9A365-CAFE-42BD-AAB5-2D2BCBA72F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FEAA6B9-527F-4A65-B10B-AF3B2E2FC8DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FEAA6B9-527F-4A65-B10B-AF3B2E2FC8DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FEAA6B9-527F-4A65-B10B-AF3B2E2FC8DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FEAA6B9-527F-4A65-B10B-AF3B2E2FC8DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
