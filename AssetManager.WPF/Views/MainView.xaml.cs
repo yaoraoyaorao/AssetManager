@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using AssetManager.WPF.Common.Models;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AssetManager.WPF.Views
@@ -18,6 +19,11 @@ namespace AssetManager.WPF.Views
                 {
                     DragMove();
                 }
+            };
+
+            menuBar.SelectionChanged += (s, e) =>
+            {
+                drawerHost.IsLeftDrawerOpen = false;
             };
         }
     }

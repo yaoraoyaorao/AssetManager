@@ -1,4 +1,5 @@
-﻿using AssetManager.WPF.Views;
+﻿using AssetManager.WPF.ViewModels;
+using AssetManager.WPF.Views;
 using Prism.Ioc;
 using Prism.Unity;
 using System.Windows;
@@ -17,7 +18,9 @@ namespace AssetManager.WPF
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-           
+            containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
+            containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
         }
     }
 

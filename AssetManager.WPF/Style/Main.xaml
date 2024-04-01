@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Style x:Key="MyListBoxItemStyle" TargetType="ListBoxItem">
+        <Setter Property="MinWidth" Value="40" />
         <Setter Property="MinHeight" Value="40" />
         <Setter Property="Template">
             <Setter.Value>
@@ -16,13 +17,13 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="borderHeader" Property="BorderThickness" Value="4,0,0,0" />
-                            <Setter TargetName="borderHeader" Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}" />
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
-                            <Setter TargetName="border" Property="Opacity" Value="0.2" />
+                            <Setter TargetName="borderHeader" Property="BorderBrush" Value="Blue" />
+                            <Setter TargetName="border" Property="Background" Value="lightBlue" />
+                            <Setter TargetName="border" Property="Opacity" Value="1" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueDarkBrush}" />
                             <Setter TargetName="border" Property="Opacity" Value="0.2" />
                         </Trigger>
                     </ControlTemplate.Triggers>
