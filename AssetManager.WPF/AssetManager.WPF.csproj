@@ -9,15 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <None Remove="Resources\defaultTX.jpeg" />
+    <None Remove="Resources\Fonts\iconfont.ttf" />
+    <None Remove="Resources\Icons\menu.png" />
+    <None Remove="Resources\Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
     <PackageReference Include="Prism.Unity" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Models\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Resources\" />
     <Folder Include="Service\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\defaultTX.jpeg" />
+    <Resource Include="Resources\Fonts\iconfont.ttf" />
+    <Resource Include="Resources\Icons\menu.png" />
+    <Resource Include="Resources\Images\Logo.png" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,139 @@
-﻿<mah:MetroWindow
+﻿<Window
     x:Class="AssetManager.WPF.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:AssetManager.WPF.Views"
-    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainView"
-    Width="800"
-    Height="450"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="资源管理"
+    Width="1200"
+    Height="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    AllowsTransparency="True"
+    Style="{StaticResource MaterialDesignWindow}"
+    WindowStartupLocation="CenterScreen"
+    WindowState="{Binding CustomWindowState}"
+    WindowStyle="None"
     mc:Ignorable="d">
-    <Grid />
-</mah:MetroWindow>
+    <Grid Background="#f4f6f9">
+        <md:DialogHost x:Name="MainDialogHost" DialogTheme="Inherit">
+            <md:DrawerHost x:Name="drawerHost" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+                <!--  左侧抽屉  -->
+                <md:DrawerHost.LeftDrawerContent>
+                    <Grid Width="220" Background="#eee">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="120" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+                            <Image Width="70" Source="../Resources/Images/Logo.png" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Text="资源管理系统" />
+                            <Border
+                                Margin="30,10,30,0"
+                                BorderBrush="DarkGray"
+                                BorderThickness="0,0,0,1" />
+                        </StackPanel>
+                        <!--  菜单  -->
+                        <ListBox ItemContainerStyle="{StaticResource MyListBoxItemStyle}">
+                            <!--  触发器  -->
+                            <!--<i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>-->
+                            <!--  ListItem模板  -->
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Background="Transparent" Orientation="Horizontal">
+                                        <md:PackIcon Margin="15,0" Kind="{Binding Icon}" />
+                                        <TextBlock Margin="10,0" Text="{Binding Title}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </md:DrawerHost.LeftDrawerContent>
+
+                <!--  主内容  -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!--  提示  -->
+                    <md:Snackbar
+                        x:Name="snackbar"
+                        Panel.ZIndex="1"
+                        MessageQueue="{md:MessageQueue}" />
+
+                    <md:ColorZone
+                        x:Name="WindowColorZone"
+                        Padding="16"
+                        Mode="Light">
+                        <DockPanel LastChildFill="False">
+
+                            <!--  右侧按钮组合  -->
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+
+                                <!--  头像  -->
+                                <Image
+                                    Width="40"
+                                    Height="40"
+                                    Margin="20,0"
+                                    Source="../Resources/Images/defaultTX.jpeg">
+                                    <Image.Clip>
+                                        <EllipseGeometry
+                                            Center="20,20"
+                                            RadiusX="20"
+                                            RadiusY="20" />
+                                    </Image.Clip>
+                                </Image>
+
+                                <!--  最小化  -->
+                                <Button Command="{Binding MinWindowCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                                    <md:PackIcon Kind="WindowMinimize" />
+                                </Button>
+
+                                <!--  正常或最大化  -->
+                                <Button Command="{Binding SetSizeWindowCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                                    <md:PackIcon Kind="{Binding WindowSizeIcon}" />
+                                </Button>
+
+                                <!--  关闭  -->
+                                <Button Command="{Binding CloseWindowCommand}" Style="{StaticResource MaterialDesignFlatButton}">
+                                    <md:PackIcon Kind="Close" />
+                                </Button>
+
+                            </StackPanel>
+
+                            <!--  左侧按钮组合  -->
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton
+                                    x:Name="MenuToggleButton"
+                                    AutomationProperties.Name="HamburgerToggleButton"
+                                    IsChecked="False"
+                                    Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                                <TextBlock
+                                    Margin="16,0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    AutomationProperties.Name="Material Design In XAML Toolkit"
+                                    FontSize="22"
+                                    Text="资源管理" />
+                            </StackPanel>
+                        </DockPanel>
+                    </md:ColorZone>
+                </Grid>
+            </md:DrawerHost>
+        </md:DialogHost>
+    </Grid>
+</Window>
