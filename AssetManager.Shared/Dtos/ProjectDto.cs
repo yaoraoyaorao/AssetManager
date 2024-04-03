@@ -1,11 +1,11 @@
 ﻿namespace AssetManager.Shared.Dtos
 {
-    public class ProjectItemDto : BaseDto
+    public class ProjectDto : BaseDto
     {
 		private string name;
-        private string? hash;
+        private string? guid;
 		private string? description;
-        private List<ResourcePackageDto> resourcePackages;
+        private List<AssetPackageDto> assetPackage;
 
         /// <summary>
         /// 项目名
@@ -28,21 +28,21 @@
         /// <summary>
         /// 项目的Hash
         /// </summary>
-        public string? Hash
-		{
-			get { return hash; }
-			set { hash = value; OnPropertyChanged(); }
+        public string? Guid
+        {
+			get { return guid; }
+			set { guid = value; OnPropertyChanged(); }
         }
 
         /// <summary>
         /// 资源包列表
         /// </summary>
-		public List<ResourcePackageDto> ResourcePackages
+		public List<AssetPackageDto>? AssetPackages
         {
-            get { return resourcePackages; }
+            get { return assetPackage; }
             set
             {
-                resourcePackages = value;
+                assetPackage = value;
                 OnPropertyChanged();
             }
         }

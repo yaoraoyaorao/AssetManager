@@ -17,15 +17,33 @@ namespace AssetManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResponse> AddAsync([FromBody] ProjectItemFromBody model)
+        public async Task<ApiResponse> Add([FromBody] ProjectItemFromBody model)
         {
             return await projectItemService.AddAsync(model);
         }
 
+        [HttpPost]
+        public async Task<ApiResponse> Update([FromQuery] ProjectItemFromBody parameter)
+        {
+            return await projectItemService.UpdateAsync(parameter);
+        }
+
         [HttpGet]
-        public async Task<ApiResponse> GetAllAsync([FromQuery] QueryParameter parameter)
+        public async Task<ApiResponse> GetAll([FromQuery] QueryParameter parameter)
         {
             return await projectItemService.GetAllAsync(parameter);
+        }
+
+        [HttpGet]
+        public async Task<ApiResponse> GetSingle(long Id)
+        {
+            return await projectItemService.GetSingleAsync(Id);
+        }            
+        
+        [HttpDelete]
+        public async Task<ApiResponse> Delete(long Id)
+        {
+            return await projectItemService.DeleteAsync(Id);
         }
     }
 }

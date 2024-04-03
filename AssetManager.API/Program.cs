@@ -2,8 +2,10 @@ using Arch.EntityFrameworkCore.UnitOfWork;
 using AssetManager.API.Context;
 using AssetManager.API.Context.Models;
 using AssetManager.API.Context.Repository;
+using AssetManager.API.Extensions;
 using AssetManager.API.Service;
 using AssetManager.API.Service.IService;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.API
@@ -26,7 +28,16 @@ namespace AssetManager.API
             builder.Services.AddCustomRepository<AssetPackage, ResourcePackageRepository>();
             builder.Services.AddCustomRepository<Platform, PlatformRepository>();
 
-            builder.Services.AddTransient<IProjectItemService, ProjectItemService>();
+            builder.Services.AddTransient<IProjectItemService, ProjectService>();
+            builder.Services.AddTransient<IAssetPackageService, AssetPackageService>();
+            builder.Services.AddTransient<IPlatformService, PlatformService>();
+
+            var autoMapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<AutoMapperProFile>();
+            });
+
+            builder.Services.AddSingleton(autoMapperConfig.CreateMapper());
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -43,7 +54,6 @@ namespace AssetManager.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

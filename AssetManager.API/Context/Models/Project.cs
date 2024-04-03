@@ -16,7 +16,7 @@
         public string? Description { get; set; }
 
         /// <summary>
-        /// 项目Hash
+        /// 项目Guid
         /// </summary>
         public string? Guid { get; set; }
 
