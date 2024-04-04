@@ -8,7 +8,7 @@ namespace AssetManager.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class PlatformController
+    public class PlatformController : ControllerBase
     {
         private readonly IPlatformService service;
 

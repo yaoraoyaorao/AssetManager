@@ -13,11 +13,9 @@ namespace AssetManager.API.Extensions
             CreateMap<PlatformAssetDto, PlatformAsset>().ReverseMap()
                 .ForMember(dest=>dest.TargetPlatform,opt=>opt.MapFrom(src=>src.TargetPlatform));
 
-            CreateMap<AssetPackageDto, AssetPackage>().ReverseMap()
-                .ForMember(des => des.PlatformAssets, opt => opt.MapFrom(src => src.PlatformAssets));
+            CreateMap<AssetPackageDto, AssetPackage>().ReverseMap();
 
-            CreateMap<ProjectDto, Project>().ReverseMap()
-                .ForMember(dest => dest.AssetPackages, opt => opt.MapFrom(src => src.AssetPackages));
+            CreateMap<ProjectDto, Project>().ReverseMap();
         }
     }
 }

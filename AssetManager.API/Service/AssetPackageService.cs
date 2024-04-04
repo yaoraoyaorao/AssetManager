@@ -64,6 +64,7 @@ namespace AssetManager.API.Service
                 };
 
                 project.AssetPackages.Add(assetPackage);
+                project.UpdateTime = DateTime.Now;
 
                 repository.Update(project);
 
@@ -112,11 +113,21 @@ namespace AssetManager.API.Service
                     predicate: x => x.TargetProject.Id == id
                     );
 
+                if (assets == null)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = $"获取失败id:{id}不存在",
+                    };
+                }
+
+                var assetDtos = mapper.Map<List<AssetPackageDto>>(assets.Items);
                 return new ApiResponse()
                 {
                     Code = 200,
                     Message = "获取成功",
-                    Data = assets
+                    Data = assetDtos
                 };
                   
             }

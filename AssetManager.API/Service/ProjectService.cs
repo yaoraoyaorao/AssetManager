@@ -1,5 +1,6 @@
 ﻿using Arch.EntityFrameworkCore.UnitOfWork;
 using AssetManager.API.Context.Models;
+using AssetManager.API.Extensions;
 using AssetManager.API.Service.IService;
 using AssetManager.Shared;
 using AssetManager.Shared.Dtos;
@@ -12,11 +13,13 @@ namespace AssetManager.API.Service
     {
         private readonly IUnitOfWork work;
         private readonly IMapper mapper;
+        private readonly IAssetUtility utility;
 
-        public ProjectService(IUnitOfWork unitOfWork,IMapper mapper)
+        public ProjectService(IUnitOfWork unitOfWork,IMapper mapper,IAssetUtility utility)
         {
             this.work = unitOfWork;
             this.mapper = mapper;
+            this.utility = utility;
         }
 
         /// <summary>
@@ -30,6 +33,17 @@ namespace AssetManager.API.Service
             {
                 var repository = work.GetRepository<Project>();
                 
+                var p = await repository.GetFirstOrDefaultAsync(predicate: x => x.Name == model.Name);
+
+                if (p != null)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = $"项目名已存在:{model.Name}",
+                    };
+                }
+
                 var projectItem = new Project()
                 {
                     Name = model.Name,
@@ -39,20 +53,14 @@ namespace AssetManager.API.Service
                     UpdateTime = DateTime.Now
                 };
 
-                projectItem.AssetPackages.Add(new AssetPackage()
-                {
-                    Max = 1,
-                    Min = 0,
-                    Patch = 0,
-                    AuditStatus = 0
-                });
-
                 var project = await repository.InsertAsync(projectItem);
 
                 if (await work.SaveChangesAsync() > 0)
                 {
 
                     var data = mapper.Map<ProjectDto>(projectItem);
+
+                    utility.CreateOrUpdateFolder(data.Name);
 
                     return new ApiResponse()
                     {
@@ -91,10 +99,20 @@ namespace AssetManager.API.Service
 
                 var project = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id == id);
 
+                if (project == null)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = $"删除失败id:{project.Id}不存在",
+                    };
+                }
+
                 repository.Delete(project);
 
                 if (await work.SaveChangesAsync() > 0)
                 {
+                    utility.DeleteFolder(project.Name);
                     return new ApiResponse()
                     {
                         Code = 200,
@@ -105,7 +123,7 @@ namespace AssetManager.API.Service
                 return new ApiResponse()
                 {
                     Code = 400,
-                    Message = "删除失败:",
+                    Message = "删除失败",
                 };
             }
             catch (Exception e)
@@ -215,6 +233,16 @@ namespace AssetManager.API.Service
                 var repository = work.GetRepository<Project>();
                 var project = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id == model.Id);
 
+                if (project == null)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = $"更新失败 id:{model.Id}不存在"
+                    };
+                }
+
+                string oldProjectName = project.Name;
                 project.Name = model.Name;
                 project.Description = model.Description;
 
@@ -222,7 +250,10 @@ namespace AssetManager.API.Service
 
                 if (await work.SaveChangesAsync() > 0)
                 {
+                    utility.CreateOrUpdateFolder(oldProjectName, model.Name);
+
                     var projectDto = mapper.Map<ProjectDto>(project);
+                    
                     return new ApiResponse()
                     {
                         Code = 200,

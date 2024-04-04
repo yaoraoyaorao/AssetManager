@@ -6,7 +6,7 @@
         private int max;
         private int min;
         private int patch;
-        private List<PlatformAssetDto> platformAssets;
+        
 
 
         public int AuditStatus
@@ -57,19 +57,6 @@
             set
             {
                 patch = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<PlatformAssetDto> PlatformAssets
-        {
-            get
-            {
-                return platformAssets;
-            }
-            set
-            {
-                platformAssets = value;
                 OnPropertyChanged();
             }
         }

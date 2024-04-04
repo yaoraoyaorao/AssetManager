@@ -31,6 +31,9 @@ namespace AssetManager.API
             builder.Services.AddTransient<IProjectItemService, ProjectService>();
             builder.Services.AddTransient<IAssetPackageService, AssetPackageService>();
             builder.Services.AddTransient<IPlatformService, PlatformService>();
+            builder.Services.AddTransient<IPlatformAssetService, PlatformAssetService>();
+
+            builder.Services.AddSingleton<IAssetUtility,AssetUtility>();
 
             var autoMapperConfig = new MapperConfiguration(cfg =>
             {

@@ -23,7 +23,7 @@ namespace AssetManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResponse> Update([FromQuery] ProjectItemFromBody parameter)
+        public async Task<ApiResponse> Update([FromBody] ProjectItemFromBody parameter)
         {
             return await projectItemService.UpdateAsync(parameter);
         }

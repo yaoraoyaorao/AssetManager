@@ -5,7 +5,6 @@
 		private string name;
         private string? guid;
 		private string? description;
-        private List<AssetPackageDto> assetPackage;
 
         /// <summary>
         /// 项目名
@@ -34,17 +33,5 @@
 			set { guid = value; OnPropertyChanged(); }
         }
 
-        /// <summary>
-        /// 资源包列表
-        /// </summary>
-		public List<AssetPackageDto>? AssetPackages
-        {
-            get { return assetPackage; }
-            set
-            {
-                assetPackage = value;
-                OnPropertyChanged();
-            }
-        }
 	}
 }
