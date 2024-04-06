@@ -21,6 +21,7 @@ namespace AssetManager.WPF
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
+            containerRegistry.RegisterForNavigation<PlatformMgrView, PlatformMgrViewModel>();
         }
     }
 

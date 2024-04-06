@@ -12,6 +12,7 @@
     <None Remove="Resources\defaultTX.jpeg" />
     <None Remove="Resources\Fonts\iconfont.ttf" />
     <None Remove="Resources\Icons\menu.png" />
+    <None Remove="Resources\Images\defaultBG.jpg" />
     <None Remove="Resources\Logo.png" />
   </ItemGroup>
 
@@ -25,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AssetManager.Shared\AssetManager.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\defaultBG.jpg" />
     <Resource Include="Resources\Images\defaultTX.jpeg" />
     <Resource Include="Resources\Fonts\iconfont.ttf" />
     <Resource Include="Resources\Icons\menu.png" />

@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.API.Service
 {
+    /// <summary>
+    /// 平台资源服务
+    /// </summary>
     public class PlatformAssetService : IPlatformAssetService
     {
         private readonly IUnitOfWork work;
