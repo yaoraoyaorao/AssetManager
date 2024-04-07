@@ -29,7 +29,7 @@ namespace AssetManager.API.Controllers
         [HttpGet]
         public async Task<ApiResponse> GetSingle(long id) => await service.GetSingleAsync(id);
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ApiResponse> Update([FromBody] PlatformDto p) => await service.UpdateAsync(p);
     }
 }

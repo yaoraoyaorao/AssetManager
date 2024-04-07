@@ -111,7 +111,7 @@ namespace AssetManager.WPF.ViewModels
 
             MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "IndexView" });
             MenuBars.Add(new MenuBar() { Icon = "ListBox", Title = "项目管理", NameSpace = "ProjectMgrView" });
-            MenuBars.Add(new MenuBar() { Icon = "Laptop", Title = "平台管理", NameSpace = "PlatformMgrView" });
+            MenuBars.Add(new MenuBar() { Icon = "Laptop", Title = "平台管理", NameSpace = "PlatformView" });
             MenuBars.Add(new MenuBar() { Icon = "CogOutline", Title = "系统设置", NameSpace = "SettingsView" });
         }
     }

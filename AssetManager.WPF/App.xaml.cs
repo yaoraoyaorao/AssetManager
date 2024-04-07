@@ -3,8 +3,8 @@ using AssetManager.WPF.Service.Base;
 using AssetManager.WPF.Service.IService;
 using AssetManager.WPF.ViewModels;
 using AssetManager.WPF.Views;
+using Prism.DryIoc;
 using Prism.Ioc;
-using Prism.Unity;
 using System.Windows;
 
 namespace AssetManager.WPF
@@ -23,10 +23,13 @@ namespace AssetManager.WPF
         {
             containerRegistry.RegisterInstance(new HttpRestClient("https://localhost:7273/"));
             containerRegistry.Register<IProjectService, ProjectService>();
+            containerRegistry.Register<IPlatformService, PlatformService>();
+
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
-            containerRegistry.RegisterForNavigation<PlatformMgrView, PlatformMgrViewModel>();
+            containerRegistry.RegisterForNavigation<PlatformView, PlatformViewModel>();
+            
         }
 
         protected override void OnStartup(StartupEventArgs e)

@@ -1,0 +1,201 @@
+﻿<UserControl
+    x:Class="AssetManager.WPF.Views.PlatformView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Shared="clr-namespace:AssetManager.Shared.Extensions;assembly=AssetManager.Shared"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AssetManager.WPF.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <md:DialogHost>
+        <md:DrawerHost IsRightDrawerOpen="{Binding IsRightDrawerOpen}">
+            <md:DrawerHost.RightDrawerContent>
+                <DockPanel Width="500" LastChildFill="False">
+
+                    <!--  标题  -->
+                    <TextBlock
+                        Margin="20,10"
+                        DockPanel.Dock="Top"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Text="平台编辑" />
+
+                    <!--  图标选择  -->
+                    <StackPanel
+                        Margin="20,10"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="图标:" />
+                        <ComboBox
+                            Width="100"
+                            Margin="10,0"
+                            ItemsSource="{x:Static Shared:Utilites.Icons}"
+                            SelectedIndex="{Binding SelectedItem}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <md:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        VerticalAlignment="Center"
+                                        Kind="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!--  平台名  -->
+                    <TextBox
+                        Margin="20,10"
+                        md:HintAssist.Hint="请输入平台名"
+                        DockPanel.Dock="Top"
+                        Text="{Binding CurrentPlatform.Name}" />
+
+                    <!--  备注  -->
+                    <TextBox
+                        MinHeight="100"
+                        Margin="20,10"
+                        md:HintAssist.Hint="请输入备注"
+                        AcceptsReturn="True"
+                        DockPanel.Dock="Top"
+                        Text="{Binding CurrentPlatform.Remark}"
+                        TextWrapping="Wrap" />
+
+                    <!--  处理按钮  -->
+                    <Button
+                        Margin="20,10"
+                        Command="{Binding AddPlatformCommand}"
+                        Content="确认"
+                        DockPanel.Dock="Top" />
+                </DockPanel>
+            </md:DrawerHost.RightDrawerContent>
+
+            <!--  内容  -->
+            <Grid Margin="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <DockPanel LastChildFill="False">
+                    <!--  搜索  -->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            Text="平台名" />
+                        <TextBox
+                            MinWidth="200"
+                            Margin="5,0"
+                            md:HintAssist.Hint="请填写平台名"
+                            Text="{Binding Search}" />
+                    </StackPanel>
+
+                    <Button
+                        Margin="30,0,0,0"
+                        Command="{Binding SearchCommand}"
+                        Content="搜索" />
+                    <Button
+                        Margin="30,0,0,0"
+                        Command="{Binding AddPlatformBtnCommand}"
+                        Content="创建平台"
+                        DockPanel.Dock="Right" />
+                </DockPanel>
+
+                <ItemsControl
+                    Grid.Row="1"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    ItemsSource="{Binding Platforms}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <md:TransitioningContent OpeningEffect="{md:TransitionEffect Kind=ExpandIn}">
+                                <md:Card
+                                    Width="500"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignOutlinedCard}">
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40" />
+                                            <RowDefinition Height="40" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="70" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="80" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <md:PackIcon
+                                            Grid.RowSpan="2"
+                                            Width="40"
+                                            Height="40"
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Kind="{Binding Icon}" />
+
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold" Text="平台名:" />
+                                            <TextBlock
+                                                Margin="5,0"
+                                                FontWeight="Bold"
+                                                Text="{Binding Name}" />
+                                        </StackPanel>
+
+
+                                        <StackPanel
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold" Text="备注:" />
+                                            <TextBlock Margin="5,0" Text="{Binding Remark}" />
+                                        </StackPanel>
+
+                                        <StackPanel
+                                            Grid.RowSpan="2"
+                                            Grid.Column="2"
+                                            Orientation="Horizontal">
+
+                                            <Button
+                                                Command="{Binding DataContext.SetPlatformCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"
+                                                DockPanel.Dock="Right"
+                                                Style="{StaticResource MaterialDesignToolButton}">
+                                                <md:PackIcon Kind="CogOutline" />
+                                            </Button>
+
+                                            <Button
+                                                Margin="10,0"
+                                                Command="{Binding DataContext.DeletePlatformCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"
+                                                DockPanel.Dock="Right"
+                                                Style="{StaticResource MaterialDesignToolButton}">
+                                                <md:PackIcon Kind="DeleteOutline" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+
+
+
+                                </md:Card>
+                            </md:TransitioningContent>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </md:DrawerHost>
+    </md:DialogHost>
+</UserControl>

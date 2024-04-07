@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AssetManager.WPF.Views
 {
     /// <summary>
-    /// PlatformMgrView.xaml 的交互逻辑
+    /// PlatformView.xaml 的交互逻辑
     /// </summary>
-    public partial class PlatformMgrView : UserControl
+    public partial class PlatformView : UserControl
     {
-        public PlatformMgrView()
+        public PlatformView()
         {
             InitializeComponent();
         }

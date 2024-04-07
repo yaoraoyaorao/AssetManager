@@ -1,7 +1,18 @@
 ﻿using AssetManager.WPF.Extensions;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace AssetManager.WPF.Views
 {
@@ -30,13 +41,14 @@ namespace AssetManager.WPF.Views
             //注册等待消息窗口
             aggregator.Register(arg =>
             {
-                DialogHost.IsOpen = arg.IsOpen;
+                MainDialogHost.IsOpen = arg.IsOpen;
 
-                if (DialogHost.IsOpen)
+                if (MainDialogHost.IsOpen)
                 {
-                    DialogHost.DialogContent = new ProgressView();
+                    MainDialogHost.DialogContent = new ProgressView();
                 }
             });
+
         }
     }
 }

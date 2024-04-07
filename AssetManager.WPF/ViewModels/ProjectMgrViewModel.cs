@@ -41,22 +41,36 @@ namespace AssetManager.WPF.ViewModels
 
         private async void GetProjectData()
         {
-            var response = await service.GetAllAsync(new QueryParameter()
+            try
             {
-                PageIndex = 0,
-                PageSize = 10,
-                Search = ""
-            });
-
-            if (response.Code == 200)
-            {
-                Projects.Clear();
-
-                foreach (var item in response.Data.Items)
+                UpdateLoading(true);
+                var response = await service.GetAllAsync(new QueryParameter()
                 {
-                    Projects.Add(item);
+                    PageIndex = 0,
+                    PageSize = 10,
+                    Search = ""
+                });
+
+                if (response.Code == 200)
+                {
+                    Projects.Clear();
+
+                    foreach (var item in response.Data.Items)
+                    {
+                        Projects.Add(item);
+                    }
                 }
             }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
+           
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
