@@ -1,4 +1,5 @@
-﻿using AssetManager.WPF.Common.Models;
+﻿using AssetManager.WPF.Extensions;
+using Prism.Events;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,7 +10,7 @@ namespace AssetManager.WPF.Views
     /// </summary>
     public partial class MainView : Window
     {
-        public MainView()
+        public MainView(IEventAggregator aggregator)
         {
             InitializeComponent();
 
@@ -25,6 +26,17 @@ namespace AssetManager.WPF.Views
             {
                 drawerHost.IsLeftDrawerOpen = false;
             };
+
+            //注册等待消息窗口
+            aggregator.Register(arg =>
+            {
+                DialogHost.IsOpen = arg.IsOpen;
+
+                if (DialogHost.IsOpen)
+                {
+                    DialogHost.DialogContent = new ProgressView();
+                }
+            });
         }
     }
 }

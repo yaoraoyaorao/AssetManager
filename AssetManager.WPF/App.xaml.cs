@@ -1,4 +1,7 @@
-﻿using AssetManager.WPF.ViewModels;
+﻿using AssetManager.WPF.Service;
+using AssetManager.WPF.Service.Base;
+using AssetManager.WPF.Service.IService;
+using AssetManager.WPF.ViewModels;
 using AssetManager.WPF.Views;
 using Prism.Ioc;
 using Prism.Unity;
@@ -18,6 +21,8 @@ namespace AssetManager.WPF
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterInstance(new HttpRestClient("https://localhost:7273/"));
+            containerRegistry.Register<IProjectService, ProjectService>();
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();

@@ -21,7 +21,7 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid Background="#f4f6f9">
-        <md:DialogHost x:Name="MainDialogHost" DialogTheme="Inherit">
+        <md:DialogHost x:Name="DialogHost" DialogTheme="Inherit">
             <md:DrawerHost x:Name="drawerHost" IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
                 <!--  左侧抽屉  -->
                 <md:DrawerHost.LeftDrawerContent>

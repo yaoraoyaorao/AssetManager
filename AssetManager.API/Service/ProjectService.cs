@@ -9,7 +9,7 @@ using AutoMapper;
 
 namespace AssetManager.API.Service
 {
-    public class ProjectService : IProjectItemService
+    public class ProjectService : IProjectService
     {
         private readonly IUnitOfWork work;
         private readonly IMapper mapper;

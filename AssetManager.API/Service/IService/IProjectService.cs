@@ -3,7 +3,7 @@ using AssetManager.Shared.Parameters;
 
 namespace AssetManager.API.Service.IService
 {
-    public interface IProjectItemService
+    public interface IProjectService
     {
         Task<ApiResponse> GetAllAsync(QueryParameter parameter);
 

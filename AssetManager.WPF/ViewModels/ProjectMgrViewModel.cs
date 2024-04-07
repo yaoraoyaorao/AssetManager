@@ -1,12 +1,18 @@
 ﻿using AssetManager.Shared.Dtos;
-using Prism.Mvvm;
+using AssetManager.Shared.Parameters;
+using AssetManager.WPF.Service.IService;
+using Prism.Ioc;
+using Prism.Regions;
 using System.Collections.ObjectModel;
 
 namespace AssetManager.WPF.ViewModels
 {
-    public class ProjectMgrViewModel:BindableBase
+    public class ProjectMgrViewModel: NavigationViewModel
     {
         private ObservableCollection<ProjectDto> projects;
+        private bool isRightDrawerOpen;
+        private ProjectDto currentProject;
+        private readonly IProjectService service;
 
         public ObservableCollection<ProjectDto> Projects
         {
@@ -14,26 +20,50 @@ namespace AssetManager.WPF.ViewModels
             set { projects = value; RaisePropertyChanged(); }
         }
 
-        public ProjectMgrViewModel()
+        public bool IsRightDrawerOpen
+        {
+            get { return isRightDrawerOpen; }
+            set { isRightDrawerOpen = value; RaisePropertyChanged(); }
+        }
+
+        public ProjectDto CurrentProject
+        {
+            get { return currentProject; }
+            set { currentProject = value; RaisePropertyChanged(); }
+        }
+
+        public ProjectMgrViewModel(IProjectService service, IContainerProvider container) : base(container)
         {
             Projects = new ObservableCollection<ProjectDto>();
 
-            GetProjectData();
+            this.service = service;
         }
 
-        private void GetProjectData()
+        private async void GetProjectData()
         {
-            //测试
-            for (int i = 0; i < 10; i++)
+            var response = await service.GetAllAsync(new QueryParameter()
             {
-                Projects.Add(new ProjectDto()
+                PageIndex = 0,
+                PageSize = 10,
+                Search = ""
+            });
+
+            if (response.Code == 200)
+            {
+                Projects.Clear();
+
+                foreach (var item in response.Data.Items)
                 {
-                    Id = i,
-                    Name = "项目:" + i,
-                    Description = "项目描述:" + i,
-                    Guid = Guid.NewGuid().ToString()
-                });
+                    Projects.Add(item);
+                }
             }
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            GetProjectData();
         }
     }
 }

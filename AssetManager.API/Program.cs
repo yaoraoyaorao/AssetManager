@@ -28,7 +28,7 @@ namespace AssetManager.API
             builder.Services.AddCustomRepository<AssetPackage, ResourcePackageRepository>();
             builder.Services.AddCustomRepository<Platform, PlatformRepository>();
 
-            builder.Services.AddTransient<IProjectItemService, ProjectService>();
+            builder.Services.AddTransient<IProjectService, ProjectService>();
             builder.Services.AddTransient<IAssetPackageService, AssetPackageService>();
             builder.Services.AddTransient<IPlatformService, PlatformService>();
             builder.Services.AddTransient<IPlatformAssetService, PlatformAssetService>();

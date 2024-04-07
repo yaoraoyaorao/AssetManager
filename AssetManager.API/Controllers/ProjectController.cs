@@ -9,9 +9,9 @@ namespace AssetManager.API.Controllers
     [Route("api/[controller]/[action]")]
     public class ProjectController : ControllerBase
     {
-        private readonly IProjectItemService projectItemService;
+        private readonly IProjectService projectItemService;
 
-        public ProjectController(IProjectItemService projectItemService)
+        public ProjectController(IProjectService projectItemService)
         {
             this.projectItemService = projectItemService;
         }
