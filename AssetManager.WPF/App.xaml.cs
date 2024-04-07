@@ -23,6 +23,18 @@ namespace AssetManager.WPF
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
             containerRegistry.RegisterForNavigation<PlatformMgrView, PlatformMgrViewModel>();
         }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            
+            SplashScreen splashScreen = new SplashScreen("/Resources/Images/splashscreen.png");
+
+            splashScreen.Show(false);
+
+            splashScreen.Close(new TimeSpan(0, 0, 1));
+
+            base.OnStartup(e);
+        }
     }
 
 }

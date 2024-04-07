@@ -13,6 +13,7 @@
     <None Remove="Resources\Fonts\iconfont.ttf" />
     <None Remove="Resources\Icons\menu.png" />
     <None Remove="Resources\Images\defaultBG.jpg" />
+    <None Remove="Resources\Images\splashscreen.png" />
     <None Remove="Resources\Logo.png" />
   </ItemGroup>
 
@@ -35,6 +36,10 @@
     <Resource Include="Resources\Fonts\iconfont.ttf" />
     <Resource Include="Resources\Icons\menu.png" />
     <Resource Include="Resources\Images\Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\splashscreen.png" />
   </ItemGroup>
 
 </Project>
