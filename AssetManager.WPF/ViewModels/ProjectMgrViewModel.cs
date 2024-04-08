@@ -4,6 +4,7 @@ using AssetManager.Shared.Parameters;
 using AssetManager.WPF.Common;
 using AssetManager.WPF.Extensions;
 using AssetManager.WPF.Service.IService;
+using DryIoc;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
@@ -15,20 +16,18 @@ namespace AssetManager.WPF.ViewModels
 {
     public class ProjectMgrViewModel: NavigationViewModel
     {
-        private ObservableCollection<ProjectDto> projects;
         private bool isRightDrawerOpen;
-        private ProjectDto currentProject;
-        private readonly IProjectService service;
-        private readonly IDialogHostService dialogHost;
+        private string searchProject;
+        private string searchAssetPackageVersion;
 
-        /// <summary>
-        /// 项目集合
-        /// </summary>
-        public ObservableCollection<ProjectDto> Projects
-        {
-            get { return projects; }
-            set { projects = value; RaisePropertyChanged(); }
-        }
+        private ProjectDto currentProject;
+        
+        private readonly IProjectService projectService;
+        private readonly IAssetPackageService assetPackageService;
+        private readonly IDialogHostService dialogHost;
+        
+        private ObservableCollection<ProjectDto> projects;
+        private ObservableCollection<AssetPackageDto> assetPackages;
 
         /// <summary>
         /// 右侧抽屉打开
@@ -46,6 +45,42 @@ namespace AssetManager.WPF.ViewModels
         {
             get { return currentProject; }
             set { currentProject = value; RaisePropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 项目搜索
+        /// </summary>
+        public string SearchProject
+        {
+            get { return searchProject; }
+            set { searchProject = value; RaisePropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 资源包版本搜索
+        /// </summary>
+        public string SearchAssetPackageVersion
+        {
+            get { return searchAssetPackageVersion; }
+            set { searchAssetPackageVersion = value; RaisePropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 项目集合
+        /// </summary>
+        public ObservableCollection<ProjectDto> Projects
+        {
+            get { return projects; }
+            set { projects = value; RaisePropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 资源平台
+        /// </summary>
+        public ObservableCollection<AssetPackageDto> AssetPackages
+        {
+            get { return assetPackages; }
+            set { assetPackages = value; RaisePropertyChanged(); }
         }
 
         /// <summary>
@@ -73,14 +108,32 @@ namespace AssetManager.WPF.ViewModels
         /// </summary>
         public DelegateCommand<ProjectDto> DisplayDownloadViewCommand { get;private set; }
 
+        /// <summary>
+        /// 搜索项目命令
+        /// </summary>
+        public DelegateCommand SearchProjectCommand { get;private set; }
 
-        public ProjectMgrViewModel(IProjectService service, IContainerProvider container) : base(container)
+        /// <summary>
+        /// 搜索资源包命名
+        /// </summary>
+        public DelegateCommand SearchAssetVersionCommand { get;private set; }
+
+        /// <summary>
+        /// 添加版本命令
+        /// </summary>
+        public DelegateCommand AddVersionCommand { get;private set; }
+
+        public ProjectMgrViewModel(IProjectService projectService,IAssetPackageService assetService, IContainerProvider container) : base(container)
         {
             Projects = new ObservableCollection<ProjectDto>();
             
+            AssetPackages = new ObservableCollection<AssetPackageDto>();
+
             this.dialogHost = container.Resolve<IDialogHostService>();
             
-            this.service = service;
+            this.projectService = projectService;
+
+            this.assetPackageService = assetService;
 
             DeleteCommand = new DelegateCommand<ProjectDto>(Delete);
 
@@ -91,15 +144,119 @@ namespace AssetManager.WPF.ViewModels
             CopyBtnCommand = new DelegateCommand<ProjectDto>(CopyGuid);
 
             DisplayDownloadViewCommand = new DelegateCommand<ProjectDto>(DisplayDownloadView);
+
+            SearchProjectCommand = new DelegateCommand(SearchProjectBtn);
+
+            SearchAssetVersionCommand = new DelegateCommand(SearchAssetVersion);
+
+            AddVersionCommand = new DelegateCommand(AddVersion);
+        }
+
+        private async void AddVersion()
+        {
+            try
+            {
+                DialogParameters param = new DialogParameters();
+
+                param.Add("Value", new AssetPackageDto());
+
+                var dialogResult = await dialogHost.ShowDialog("AddVersionView", param);
+
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        public override async void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            await GetProjectData();
+        }
+
+        /// <summary>
+        /// 搜索资源版本
+        /// </summary>
+        private async void SearchAssetVersion()
+        {
+            await GetAssetPackageData();
+        }
+
+        /// <summary>
+        /// 搜索项目
+        /// </summary>
+        private async void SearchProjectBtn()
+        {
+            await GetProjectData();
         }
 
         /// <summary>
         /// 显示下载界面
         /// </summary>
         /// <param name="dto"></param>
-        private void DisplayDownloadView(ProjectDto dto)
+        private async void DisplayDownloadView(ProjectDto dto)
         {
-            
+            if (dto == null)
+            {
+                aggregator.SendMessage("当前项目为空");
+                return;
+            }
+
+            IsRightDrawerOpen = true;
+
+            CurrentProject = dto;
+
+            await GetAssetPackageData();
+        }
+
+        /// <summary>
+        /// 获取资源包数据
+        /// </summary>
+        /// <returns></returns>
+        private async Task GetAssetPackageData()
+        {
+            try
+            {
+                UpdateLoading(true);
+
+                var response = await assetPackageService.GetAllAsync(new QueryParameter()
+                {
+                    Id = CurrentProject.Id,
+                    PageIndex = 0,
+                    PageSize = 10,
+                    Search = SearchAssetPackageVersion
+                });
+
+                if (response.Code == 200)
+                {
+                    AssetPackages.Clear();
+
+                    foreach (var item in response.Data.Items)
+                    {
+                        item.Version = item.Max + "." + item.Min + "." + item.Patch;
+                        AssetPackages.Add(item);
+                    }
+                }
+                else
+                {
+                    aggregator.SendMessage("数据获取失败：" + response.Message);
+                }
+            }
+            catch (Exception e)
+            {
+                aggregator.SendMessage("数据获取失败：" + e.Message);
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
         }
 
         /// <summary>
@@ -147,7 +304,7 @@ namespace AssetManager.WPF.ViewModels
                 if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
 
                 UpdateLoading(true);
-                var response = await service.DeleteAsync(dto.Id);
+                var response = await projectService.DeleteAsync(dto.Id);
                 if (response.Code == 200)
                 {
                     await GetProjectData();
@@ -179,11 +336,11 @@ namespace AssetManager.WPF.ViewModels
             try
             {
                 UpdateLoading(true);
-                var response = await service.GetAllAsync(new QueryParameter()
+                var response = await projectService.GetAllAsync(new QueryParameter()
                 {
                     PageIndex = 0,
                     PageSize = 10,
-                    Search = ""
+                    Search = SearchProject
                 });
 
                 if (response.Code == 200)
@@ -195,11 +352,15 @@ namespace AssetManager.WPF.ViewModels
                         Projects.Add(item);
                     }
                 }
+                else
+                {
+                    aggregator.SendMessage("数据获取失败：" + response.Message);
+                }
             }
             catch (Exception e)
             {
 
-                throw;
+                aggregator.SendMessage("数据获取失败：" + e.Message);
             }
             finally
             {
@@ -231,7 +392,7 @@ namespace AssetManager.WPF.ViewModels
                     UpdateLoading(true);
                     if (project.Id > 0)
                     {
-                        response = await service.UpdateAsync(new ProjectItemFromBody()
+                        response = await projectService.UpdateAsync(new ProjectItemFromBody()
                         {
                             Name = project.Name,
                             Description = project.Description,
@@ -239,7 +400,7 @@ namespace AssetManager.WPF.ViewModels
                     }
                     else
                     {
-                        response = await service.AddAsync(new ProjectItemFromBody()
+                        response = await projectService.AddAsync(new ProjectItemFromBody()
                         {
                             Name = project.Name,
                             Description = project.Description,
@@ -266,13 +427,6 @@ namespace AssetManager.WPF.ViewModels
             {
                 UpdateLoading(false);
             }
-        }
-
-        public override async void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-
-            await GetProjectData();
         }
     }
 }

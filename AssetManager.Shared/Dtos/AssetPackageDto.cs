@@ -6,9 +6,8 @@
         private int max;
         private int min;
         private int patch;
+        private string? version;
         
-
-
         public int AuditStatus
         {
             get
@@ -59,6 +58,12 @@
                 patch = value;
                 OnPropertyChanged();
             }
+        }
+
+        public string? Version
+        {
+            get { return version; }
+            set { version = value; OnPropertyChanged(); }
         }
     }
 }

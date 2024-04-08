@@ -17,7 +17,7 @@ namespace AssetManager.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResponse> GetAll(long id) => await service.GetAllAsync(id);
+        public async Task<ApiResponse> GetAll([FromQuery]QueryParameter query) => await service.GetAllAsync(query);
 
         [HttpPost]
         public async Task<ApiResponse> Add([FromBody]AssetPackageParameter query) =>await service.AddAsync(query);

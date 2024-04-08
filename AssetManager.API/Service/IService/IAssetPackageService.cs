@@ -10,7 +10,7 @@ namespace AssetManager.API.Service.IService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<ApiResponse> GetAllAsync(long id);
+        Task<ApiResponse> GetAllAsync(QueryParameter query);
 
         /// <summary>
         /// 添加资源

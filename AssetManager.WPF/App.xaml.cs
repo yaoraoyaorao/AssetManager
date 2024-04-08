@@ -27,6 +27,7 @@ namespace AssetManager.WPF
             containerRegistry.RegisterInstance(new HttpRestClient("https://localhost:7273/"));
             containerRegistry.Register<IProjectService, ProjectService>();
             containerRegistry.Register<IPlatformService, PlatformService>();
+            containerRegistry.Register<IAssetPackageService, AssetPackageService>();
             containerRegistry.Register<IDialogHostService, DialogHostService>();
 
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
@@ -36,6 +37,7 @@ namespace AssetManager.WPF
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
             containerRegistry.RegisterForNavigation<PlatformView, PlatformViewModel>();
             containerRegistry.RegisterForNavigation<AddProjectView, AddProjectViewModel>();
+            containerRegistry.RegisterForNavigation<AddVersionView, AddVersionViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

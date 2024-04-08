@@ -36,6 +36,15 @@ namespace AssetManager.API.Service
                    include:source=>source.Include(b=>b.AssetPackages)
                    );
 
+                if (project == null)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = "添加失败:项目不存在 id:" + assetPackageParameter.Id,
+                    };
+                }
+
                 var packages = project.AssetPackages.Where(a =>
                 {
                     string version = a.Max + "." + a.Min + "." + a.Patch;
@@ -103,14 +112,19 @@ namespace AssetManager.API.Service
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<ApiResponse> GetAllAsync(long id)
+        public async Task<ApiResponse> GetAllAsync(QueryParameter query)
         {
             try
             {
                 var repository = work.GetRepository<AssetPackage>();
-
                 var assets = await repository.GetPagedListAsync(
-                    predicate: x => x.TargetProject.Id == id
+                    predicate: x =>
+                     x.TargetProject.Id == query.Id &&
+                    (string.IsNullOrWhiteSpace(query.Search) ||
+                    x.Max + "." + x.Min + "." + x.Patch == query.Search),
+
+                    pageIndex: query.PageIndex,
+                    pageSize: query.PageSize
                     );
 
                 if (assets == null)
@@ -118,16 +132,16 @@ namespace AssetManager.API.Service
                     return new ApiResponse()
                     {
                         Code = 400,
-                        Message = $"获取失败id:{id}不存在",
+                        Message = $"获取失败id:{query.Id}不存在",
                     };
                 }
 
-                var assetDtos = mapper.Map<List<AssetPackageDto>>(assets.Items);
+                //var assetDtos = mapper.Map<List<AssetPackageDto>>(assets.Items);
                 return new ApiResponse()
                 {
                     Code = 200,
                     Message = "获取成功",
-                    Data = assetDtos
+                    Data = assets
                 };
                   
             }
