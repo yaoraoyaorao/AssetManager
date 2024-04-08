@@ -1,5 +1,7 @@
 ﻿using AssetManager.Shared.Dtos;
 using AssetManager.Shared.Extensions;
+using AssetManager.WPF.Common;
+using AssetManager.WPF.Extensions;
 using AssetManager.WPF.Service.IService;
 using Prism.Commands;
 using Prism.Ioc;
@@ -9,11 +11,11 @@ namespace AssetManager.WPF.ViewModels
 {
     public class PlatformViewModel : NavigationViewModel
     {
-
+        private readonly IPlatformService service;
+        private readonly IDialogHostService dialogHost;
         private bool isRightDrawerOpen;
         private PlatformDto currentPlatform;
         private ObservableCollection<PlatformDto> platforms;
-        private readonly IPlatformService service;
         private string search;
         private int _selectedItem;
 
@@ -62,6 +64,8 @@ namespace AssetManager.WPF.ViewModels
 
             this.service = service;
 
+            this.dialogHost = containerProvider.Resolve<IDialogHostService>();
+
             SearchCommand = new DelegateCommand(SearchContent);
 
             AddPlatformBtnCommand = new DelegateCommand(AddPlatformBtn);
@@ -90,6 +94,9 @@ namespace AssetManager.WPF.ViewModels
         {
             try
             {
+                var dialogResult = await dialogHost.Question("温馨提示", $"确认删除此平台吗:{dto.Name}吗");
+                if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
+
                 UpdateLoading(true);
                 var response = await service.DeleteAsync(dto.Id);
                 if (response.Code == 200)
@@ -188,6 +195,9 @@ namespace AssetManager.WPF.ViewModels
         {
             try
             {
+                var dialogResult = await dialogHost.Question("温馨提示", $"确认执行此次操作吗");
+                if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
+
                 UpdateLoading(true);
 
                 //判断是添加还是修改

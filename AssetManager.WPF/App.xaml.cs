@@ -1,8 +1,10 @@
-﻿using AssetManager.WPF.Service;
+﻿using AssetManager.WPF.Common;
+using AssetManager.WPF.Service;
 using AssetManager.WPF.Service.Base;
 using AssetManager.WPF.Service.IService;
 using AssetManager.WPF.ViewModels;
 using AssetManager.WPF.Views;
+using AssetManager.WPF.Views.Dialogs;
 using Prism.DryIoc;
 using Prism.Ioc;
 using System.Windows;
@@ -24,12 +26,14 @@ namespace AssetManager.WPF
             containerRegistry.RegisterInstance(new HttpRestClient("https://localhost:7273/"));
             containerRegistry.Register<IProjectService, ProjectService>();
             containerRegistry.Register<IPlatformService, PlatformService>();
+            containerRegistry.Register<IDialogHostService, DialogHostService>();
+
+            containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
 
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
             containerRegistry.RegisterForNavigation<PlatformView, PlatformViewModel>();
-            
         }
 
         protected override void OnStartup(StartupEventArgs e)

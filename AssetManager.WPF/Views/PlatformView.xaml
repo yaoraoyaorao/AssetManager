@@ -12,6 +12,8 @@
     mc:Ignorable="d">
     <md:DialogHost>
         <md:DrawerHost IsRightDrawerOpen="{Binding IsRightDrawerOpen}">
+
+            <!--  左侧抽屉内容  -->
             <md:DrawerHost.RightDrawerContent>
                 <DockPanel Width="500" LastChildFill="False">
 
