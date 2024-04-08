@@ -22,7 +22,7 @@ namespace AssetManager.API.Controllers
             return await projectItemService.AddAsync(model);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ApiResponse> Update([FromBody] ProjectItemFromBody parameter)
         {
             return await projectItemService.UpdateAsync(parameter);

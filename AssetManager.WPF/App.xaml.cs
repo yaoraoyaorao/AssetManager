@@ -3,6 +3,7 @@ using AssetManager.WPF.Service;
 using AssetManager.WPF.Service.Base;
 using AssetManager.WPF.Service.IService;
 using AssetManager.WPF.ViewModels;
+using AssetManager.WPF.ViewModels.Dialogs;
 using AssetManager.WPF.Views;
 using AssetManager.WPF.Views.Dialogs;
 using Prism.DryIoc;
@@ -34,6 +35,7 @@ namespace AssetManager.WPF
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<ProjectMgrView, ProjectMgrViewModel>();
             containerRegistry.RegisterForNavigation<PlatformView, PlatformViewModel>();
+            containerRegistry.RegisterForNavigation<AddProjectView, AddProjectViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

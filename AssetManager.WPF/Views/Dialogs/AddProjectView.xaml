@@ -1,0 +1,66 @@
+﻿<UserControl
+    x:Class="AssetManager.WPF.Views.Dialogs.AddProjectView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AssetManager.WPF.Views.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    Height="300"
+    mc:Ignorable="d">
+    <DockPanel Width="400" LastChildFill="False">
+        <!--  图片  -->
+        <Image
+            Width="400"
+            Height="100"
+            DockPanel.Dock="Top"
+            Source="../../Resources/Images/defaultBG.jpg"
+            Stretch="UniformToFill" />
+
+        <StackPanel
+            Margin="20"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,15,0"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="项目名：" />
+            <TextBox
+                MinWidth="200"
+                md:HintAssist.Hint="请输入项目名"
+                FontSize="16"
+                Text="{Binding Project.Name}" />
+        </StackPanel>
+
+        <StackPanel
+            Margin="20,0"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,15,0"
+                FontWeight="Bold"
+                Text="项目简介：" />
+            <TextBox
+                MinWidth="200"
+                MinHeight="50"
+                md:HintAssist.Hint="请输入项目简介"
+                AcceptsReturn="True"
+                FontSize="16"
+                Text="{Binding Project.Description}" />
+        </StackPanel>
+
+        <StackPanel
+            Margin="10,0"
+            DockPanel.Dock="Right"
+            Orientation="Horizontal">
+            <Button
+                Margin="5"
+                Command="{Binding CancelCommand}"
+                Content="取消"
+                Style="{StaticResource MaterialDesignPaperButton}" />
+            <Button Command="{Binding SaveCommand}" Content="确认" />
+        </StackPanel>
+
+    </DockPanel>
+</UserControl>

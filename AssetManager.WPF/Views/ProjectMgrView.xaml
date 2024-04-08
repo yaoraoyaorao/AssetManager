@@ -14,19 +14,19 @@
         <md:DrawerHost IsRightDrawerOpen="{Binding IsRightDrawerOpen}">
             <md:DrawerHost.RightDrawerContent>
                 <DockPanel Width="500" LastChildFill="False">
+
+                    <!--  图片  -->
                     <Image
                         Width="500"
                         Height="140"
                         DockPanel.Dock="Top"
                         Source="../Resources/Images/defaultBG.jpg"
                         Stretch="UniformToFill" />
-                    <TextBlock
-                        DockPanel.Dock="Top"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Text="{Binding CurrentProject.Name}" />
+
+
                 </DockPanel>
             </md:DrawerHost.RightDrawerContent>
+
             <!--  内容  -->
             <Grid Margin="30">
                 <Grid.RowDefinitions>
@@ -66,6 +66,7 @@
                     <Button Margin="30,0,0,0" Content="搜索" />
                     <Button
                         Margin="30,0,0,0"
+                        Command="{Binding AddBtnCommand}"
                         Content="创建项目"
                         DockPanel.Dock="Right" />
                 </DockPanel>
@@ -106,8 +107,19 @@
                                             Margin="0,0,16,-20"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
+                                            Command="{Binding DataContext.EditBtnCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
                                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
                                             <md:PackIcon Kind="ApplicationCogOutline" />
+                                        </Button>
+
+                                        <Button
+                                            Grid.Row="0"
+                                            Margin="0,0,60,-20"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                                            <md:PackIcon Kind="CloudDownload" />
                                         </Button>
 
                                         <StackPanel Grid.Row="1" Margin="8,20,8,0">
@@ -138,6 +150,8 @@
                                                     Width="30"
                                                     Padding="2,0,2,0"
                                                     md:RippleAssist.IsCentered="True"
+                                                    Command="{Binding DataContext.CopyBtnCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"
                                                     Style="{StaticResource MaterialDesignToolButton}">
                                                     <md:PackIcon Kind="ContentCopy" />
                                                 </Button>
@@ -165,6 +179,8 @@
                                                 Width="30"
                                                 Padding="2,0,2,0"
                                                 md:RippleAssist.IsCentered="True"
+                                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"
                                                 Style="{StaticResource MaterialDesignToolButton}">
                                                 <md:PackIcon Kind="Delete" />
                                             </Button>

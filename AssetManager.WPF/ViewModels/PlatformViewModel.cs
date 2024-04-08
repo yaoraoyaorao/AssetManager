@@ -7,6 +7,7 @@ using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using System.Collections.ObjectModel;
+
 namespace AssetManager.WPF.ViewModels
 {
     public class PlatformViewModel : NavigationViewModel
@@ -56,6 +57,7 @@ namespace AssetManager.WPF.ViewModels
         public DelegateCommand AddPlatformCommand { get; private set; }
 
         public DelegateCommand<PlatformDto> DeletePlatformCommand { get; private set; }
+
         public DelegateCommand<PlatformDto> SetPlatformCommand { get; private set; }
 
         public PlatformViewModel(IPlatformService service,IContainerProvider containerProvider) : base(containerProvider)
@@ -102,12 +104,18 @@ namespace AssetManager.WPF.ViewModels
                 if (response.Code == 200)
                 {
                     await GetPlatformsData();
+
+                    aggregator.SendMessage("删除成功");
+                }
+                else
+                {
+                    aggregator.SendMessage("删除失败：" + response.Message);
                 }
             }
             catch (Exception e)
             {
 
-                throw;
+                aggregator.SendMessage("删除失败：" + e.Message);
             }
             finally
             {
@@ -209,6 +217,12 @@ namespace AssetManager.WPF.ViewModels
                     {
                         await GetPlatformsData();
                         IsRightDrawerOpen = false;
+
+                        aggregator.SendMessage("修改成功");
+                    }
+                    else
+                    {
+                        aggregator.SendMessage("修改失败:" + response.Message);
                     }
                 }
                 else
@@ -219,14 +233,18 @@ namespace AssetManager.WPF.ViewModels
                     {
                         await GetPlatformsData();
                         IsRightDrawerOpen = false;
+                        aggregator.SendMessage("添加成功");
+                    }
+                    else
+                    {
+                        aggregator.SendMessage("添加失败:" + response.Message);
                     }
                 }
 
             }
             catch (Exception e)
             {
-
-                throw;
+                aggregator.SendMessage("添加或修改失败:" + e.Message);
             }
             finally
             {
