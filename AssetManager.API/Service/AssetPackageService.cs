@@ -29,6 +29,15 @@ namespace AssetManager.API.Service
         {
             try
             {
+                if (assetPackageParameter.Max < 1 || assetPackageParameter.Min < 0 || assetPackageParameter.Patch < 0)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = "Max需要从1开始，Min和Patch要从0开始"
+                    };
+                }
+
                 var repository = work.GetRepository<Project>();
 
                 var project = await repository.GetFirstOrDefaultAsync(

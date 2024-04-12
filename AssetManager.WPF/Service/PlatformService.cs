@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace AssetManager.WPF.Service
 {
-    public class PlatformService: IPlatformService
+    public class PlatformService : IPlatformService
     {
         private readonly HttpRestClient client;
         private readonly string serviceName;
@@ -49,6 +49,17 @@ namespace AssetManager.WPF.Service
             request.Route = $"api/{serviceName}/GetAll?PageIndex={query.PageIndex}&PageSize={query.PageSize}&Search={query.Search}";
 
             return await client.ExecuteAsync<PagedList<PlatformDto>>(request);
+        }
+
+        public async Task<ApiResponse<List<PlatformDto>>> GetCanUsePlatform(int id)
+        {
+            BaseRequest request = new BaseRequest();
+
+            request.Method = Method.Get;
+
+            request.Route = $"api/{serviceName}/GetCanUsePlatform?id={id}";
+
+            return await client.ExecuteAsync<List<PlatformDto>>(request);
         }
 
         public async Task<ApiResponse<PlatformDto>> GetFirstOfDefaultAsync(int id)

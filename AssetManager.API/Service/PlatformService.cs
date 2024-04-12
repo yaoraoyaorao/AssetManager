@@ -5,6 +5,7 @@ using AssetManager.Shared;
 using AssetManager.Shared.Dtos;
 using AssetManager.Shared.Parameters;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AssetManager.API.Service
 {
@@ -119,6 +120,48 @@ namespace AssetManager.API.Service
                     Code = 400,
                     Message = "获取失败：" + e.Message,
                 };
+            }
+        }
+
+        public async Task<ApiResponse> GetCanUsePlatformAsync(long id)
+        {
+            try
+            {
+                var repository = work.GetRepository<Platform>();
+
+                var repositoryAsset = work.GetRepository<AssetPackage>();
+
+                var assetPackage = await repositoryAsset.GetFirstOrDefaultAsync(
+                    predicate: x => x.Id == id,
+                    include:source=>source.Include(a=>a.PlatformAssets).ThenInclude(b=>b.TargetPlatform));
+
+                if (assetPackage == null)
+                {
+                    return new ApiResponse()
+                    {
+                        Code = 400,
+                        Message = "获取失败：资源包不存在"
+                    };
+                }
+
+                var targetPlatforms = assetPackage.PlatformAssets.Select(assetPackage => assetPackage.TargetPlatform.Id).ToList();
+
+                //获取未使用的平台
+                var platforms = await repository.GetPagedListAsync(
+                    predicate: x => !targetPlatforms.Contains(x.Id),
+                    pageIndex: 0, pageSize: 100);
+
+                return new ApiResponse()
+                {
+                    Code = 200,
+                    Message = "获取成功",
+                    Data = platforms.Items
+                };
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
 

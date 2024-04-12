@@ -31,5 +31,8 @@ namespace AssetManager.API.Controllers
 
         [HttpPut]
         public async Task<ApiResponse> Update([FromBody] PlatformDto p) => await service.UpdateAsync(p);
+
+        [HttpGet]
+        public async Task<ApiResponse> GetCanUsePlatform(long id) => await service.GetCanUsePlatformAsync(id);
     }
 }

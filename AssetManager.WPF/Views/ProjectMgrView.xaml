@@ -46,7 +46,10 @@
                             VerticalAlignment="Center"
                             md:HintAssist.Hint="请填写版本"
                             Text="{Binding SearchAssetPackageVersion}" />
-                        <Button Command="{Binding SearchAssetVersionCommand}" Content="搜索" />
+                        <Button
+                            Command="{Binding SearchAssetVersionCommand}"
+                            Content="搜索"
+                            Style="{StaticResource MaterialDesignOutlinedButton}" />
                     </StackPanel>
 
                     <!--  添加版本  -->
@@ -57,7 +60,8 @@
                         Margin="5"
                         HorizontalAlignment="Right"
                         Command="{Binding AddVersionCommand}"
-                        Content="添加版本" />
+                        Content="添加版本"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
 
                     <!--  版本列表显示  -->
                     <ItemsControl
@@ -129,7 +133,7 @@
 
                                                 <!--  打开平台  -->
                                                 <Button
-                                                    Command="{Binding DataContext.SetPlatformCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                                    Command="{Binding DataContext.PlatformAssetCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
                                                     CommandParameter="{Binding}"
                                                     DockPanel.Dock="Right"
                                                     Style="{StaticResource MaterialDesignToolButton}">
@@ -186,12 +190,14 @@
                     <Button
                         Margin="30,0,0,0"
                         Command="{Binding SearchProjectCommand}"
-                        Content="搜索" />
+                        Content="搜索"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
                     <Button
                         Margin="30,0,0,0"
                         Command="{Binding AddBtnCommand}"
                         Content="创建项目"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
                 </DockPanel>
 
                 <!--  内容  -->

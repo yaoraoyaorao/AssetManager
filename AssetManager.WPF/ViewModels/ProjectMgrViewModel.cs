@@ -123,6 +123,13 @@ namespace AssetManager.WPF.ViewModels
         /// </summary>
         public DelegateCommand AddVersionCommand { get;private set; }
 
+        /// <summary>
+        /// 平台资源命令
+        /// </summary>
+        public DelegateCommand<AssetPackageDto> PlatformAssetCommand { get;private set; }
+
+
+
         public ProjectMgrViewModel(IProjectService projectService,IAssetPackageService assetService, IContainerProvider container) : base(container)
         {
             Projects = new ObservableCollection<ProjectDto>();
@@ -150,22 +157,28 @@ namespace AssetManager.WPF.ViewModels
             SearchAssetVersionCommand = new DelegateCommand(SearchAssetVersion);
 
             AddVersionCommand = new DelegateCommand(AddVersion);
+
+            PlatformAssetCommand = new DelegateCommand<AssetPackageDto>(PlatformAsset);
         }
 
-        private async void AddVersion()
+
+
+        public override async void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
+
+            await GetProjectData();
+        }
+
+        private async void PlatformAsset(AssetPackageDto packageDto)
         {
             try
             {
                 DialogParameters param = new DialogParameters();
-
-                param.Add("Value", new AssetPackageDto());
-
-                var dialogResult = await dialogHost.ShowDialog("AddVersionView", param);
-
-                if (dialogResult.Result == ButtonResult.OK)
-                {
-
-                }
+                
+                param.Add("Value", packageDto);
+                
+                var dialogResult = await dialogHost.ShowDialog("PlatformAssetView", param);
             }
             catch (Exception e)
             {
@@ -174,11 +187,50 @@ namespace AssetManager.WPF.ViewModels
             }
         }
 
-        public override async void OnNavigatedTo(NavigationContext navigationContext)
+        private async void AddVersion()
         {
-            base.OnNavigatedTo(navigationContext);
+            try
+            {
 
-            await GetProjectData();
+                DialogParameters param = new DialogParameters();
+
+                param.Add("Value", new AssetPackageDto());
+
+                var dialogResult = await dialogHost.ShowDialog("AddVersionView", param);
+
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+                    UpdateLoading(true);
+                    var assetDto = dialogResult.Parameters.GetValue<AssetPackageDto>("Value");
+                    var response = await assetPackageService.AddAsync(new AssetPackageParameter()
+                    {
+                        Id = currentProject.Id,
+                        Max = assetDto.Max,
+                        Min = assetDto.Min,
+                        Patch = assetDto.Patch,
+                    });
+
+                    if (response.Code == 200)
+                    {
+                        await GetAssetPackageData();
+
+                        aggregator.SendMessage("添加成功");
+                    }
+                    else
+                    {
+                        aggregator.SendMessage(response.Message);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                aggregator.SendMessage("添加失败:", e.Message);
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
         }
 
         /// <summary>
@@ -300,7 +352,7 @@ namespace AssetManager.WPF.ViewModels
         {
             try
             {
-                var dialogResult = await dialogHost.Question("温馨提示", $"确认删除此项目吗:{dto.Name}吗");
+                var dialogResult = await dialogHost.Question("温馨提示", $"确认删除此项目:{dto.Name}吗");
                 if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
 
                 UpdateLoading(true);

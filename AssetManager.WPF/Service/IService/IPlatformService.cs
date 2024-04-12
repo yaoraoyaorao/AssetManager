@@ -15,5 +15,7 @@ namespace AssetManager.WPF.Service.IService
         Task<ApiResponse<PlatformDto>> GetFirstOfDefaultAsync(int id);
 
         Task<ApiResponse<PagedList<PlatformDto>>> GetAllAsync(QueryParameter query);
+
+        Task<ApiResponse<List<PlatformDto>>> GetCanUsePlatform(int id);
     }
 }

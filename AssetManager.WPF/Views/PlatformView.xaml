@@ -70,7 +70,8 @@
                         Margin="20,10"
                         Command="{Binding AddPlatformCommand}"
                         Content="确认"
-                        DockPanel.Dock="Top" />
+                        DockPanel.Dock="Top"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
                 </DockPanel>
             </md:DrawerHost.RightDrawerContent>
 
@@ -98,12 +99,14 @@
                     <Button
                         Margin="30,0,0,0"
                         Command="{Binding SearchCommand}"
-                        Content="搜索" />
+                        Content="搜索"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
                     <Button
                         Margin="30,0,0,0"
                         Command="{Binding AddPlatformBtnCommand}"
                         Content="创建平台"
-                        DockPanel.Dock="Right" />
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
                 </DockPanel>
 
                 <ItemsControl

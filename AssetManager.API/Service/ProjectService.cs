@@ -48,7 +48,7 @@ namespace AssetManager.API.Service
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    Guid = Guid.NewGuid().ToString(),
+                    Guid = Guid.NewGuid().ToString("N"),
                     CreateTime = DateTime.Now,
                     UpdateTime = DateTime.Now
                 };
@@ -60,7 +60,7 @@ namespace AssetManager.API.Service
 
                     var data = mapper.Map<ProjectDto>(projectItem);
 
-                    utility.CreateOrUpdateFolder(data.Name);
+                    utility.CreateOrUpdateFolder(data.Guid);
 
                     return new ApiResponse()
                     {

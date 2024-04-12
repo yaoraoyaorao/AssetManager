@@ -57,10 +57,6 @@ namespace AssetManager.WPF.ViewModels.Dialogs
         /// </summary>
         private void Save()
         {
-            if (AssetPackage.Max == 0 || AssetPackage.Min == 0 || AssetPackage.Patch == 0)
-            {
-                return;
-            }
 
             if (DialogHost.IsDialogOpen(DialogHostName))
             {

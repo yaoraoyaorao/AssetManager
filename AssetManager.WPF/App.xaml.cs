@@ -28,6 +28,7 @@ namespace AssetManager.WPF
             containerRegistry.Register<IProjectService, ProjectService>();
             containerRegistry.Register<IPlatformService, PlatformService>();
             containerRegistry.Register<IAssetPackageService, AssetPackageService>();
+            containerRegistry.Register<IPlatformAssetService, PlatformAssetService>();
             containerRegistry.Register<IDialogHostService, DialogHostService>();
 
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
@@ -38,6 +39,7 @@ namespace AssetManager.WPF
             containerRegistry.RegisterForNavigation<PlatformView, PlatformViewModel>();
             containerRegistry.RegisterForNavigation<AddProjectView, AddProjectViewModel>();
             containerRegistry.RegisterForNavigation<AddVersionView, AddVersionViewModel>();
+            containerRegistry.RegisterForNavigation<PlatformAssetView, PlatformAssetViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

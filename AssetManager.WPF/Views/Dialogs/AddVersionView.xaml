@@ -38,29 +38,6 @@
         </StackPanel>
 
         <StackPanel
-            MinHeight="100"
-            Margin="20,0"
-            DockPanel.Dock="Top"
-            Orientation="Vertical">
-            <TextBlock
-                Margin="0,0,15,0"
-                FontWeight="Bold"
-                Text="平台选择：" />
-            <ScrollViewer HorizontalAlignment="Center">
-                <ItemsControl ItemsSource="{Binding Platforms}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <md:PackIcon Margin="10,0" Kind="{Binding Icon}" />
-                                <CheckBox Content="{Binding Name}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </StackPanel>
-
-        <StackPanel
             Margin="10,0"
             DockPanel.Dock="Right"
             Orientation="Horizontal">

@@ -1,0 +1,137 @@
+﻿<UserControl
+    x:Class="AssetManager.WPF.Views.Dialogs.PlatformAssetView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AssetManager.WPF.Views.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    Width="600"
+    Height="600"
+    mc:Ignorable="d">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+
+        <Button
+            Width="60"
+            HorizontalAlignment="Right"
+            Command="{Binding CancelCommand}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <md:PackIcon Kind="Close" />
+        </Button>
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <ComboBox
+                Width="150"
+                Height="50"
+                Margin="5"
+                md:HintAssist.Hint="选择平台"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Platforms}"
+                SelectedItem="{Binding SelectedPlatform}"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+            <Button
+                Width="100"
+                Margin="5"
+                Command="{Binding AddPlatformCommand}"
+                Content="添加平台"
+                Style="{StaticResource MaterialDesignOutlinedButton}" />
+        </StackPanel>
+
+
+        <!--  版本列表显示  -->
+        <ItemsControl
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            ItemsSource="{Binding PlatformAssets}">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <md:TransitioningContent OpeningEffect="{md:TransitionEffect Kind=ExpandIn}">
+                        <md:Card
+                            Width="500"
+                            Margin="10"
+                            Style="{StaticResource MaterialDesignOutlinedCard}">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+
+                                <md:PackIcon
+                                    Grid.RowSpan="2"
+                                    Width="40"
+                                    Height="40"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Kind="{Binding TargetPlatform.Icon}" />
+
+                                <StackPanel
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" Text="最近更新日期:" />
+                                    <TextBlock
+                                        Margin="5,0"
+                                        FontWeight="Bold"
+                                        Text="{Binding Version}" />
+                                </StackPanel>
+
+                                <StackPanel
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal">
+
+                                    <!--  上传  -->
+                                    <Button
+                                        Command="{Binding DataContext.UploadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource MaterialDesignToolButton}"
+                                        ToolTip="上传文件">
+                                        <md:PackIcon Kind="Upload" />
+                                    </Button>
+
+                                    <!--  下载  -->
+                                    <Button
+                                        Command="{Binding DataContext.DonwloadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding}"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource MaterialDesignToolButton}"
+                                        ToolTip="下载文件">
+                                        <md:PackIcon Kind="Download" />
+                                    </Button>
+
+                                </StackPanel>
+                            </Grid>
+                        </md:Card>
+                    </md:TransitioningContent>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
+    </Grid>
+</UserControl>

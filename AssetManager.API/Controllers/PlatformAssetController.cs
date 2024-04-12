@@ -18,5 +18,10 @@ namespace AssetManager.API.Controllers
 
         [HttpPost]
         public async Task<ApiResponse> Add([FromBody] PlatformAssetParameter query) => await service.AddAsync(query);
+
+        [HttpGet]
+        public async Task<ApiResponse> GetAll(long id) => await service.GetAllAsync(id);
+
+       
     }
 }
